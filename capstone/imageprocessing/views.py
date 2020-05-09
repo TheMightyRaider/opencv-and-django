@@ -43,5 +43,5 @@ def videostream(request):
     return StreamingHttpResponse(postframes())
         
 
-# def generateImageEncoding(request):
+
 
