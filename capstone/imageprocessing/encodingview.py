@@ -1,6 +1,9 @@
 from imutils import paths
 import face_recognition
 import numpy as np
+import pickle
+import base64
+import json
 import cv2
 
 from rest_framework.views import APIView
@@ -11,9 +14,6 @@ from .models import UserAndEncodingDetail
 
 class generateImageEncoding(APIView):
     def post(self,request):
-        user_encoding=None
-        user_name=None
-        encodings=None
 
         data=request.FILES['encoding']
         name=request.data['name']
@@ -27,10 +27,13 @@ class generateImageEncoding(APIView):
         encodings=face_recognition.face_encodings(rgb,boxes)
         
         for encoding in encodings:
-            user_encoding=encoding
+            np_array_to_list=list(np.asarray(encoding))
+            json_encoded_list=json.dumps(np_array_to_list)
+            user_encoding=json_encoded_list
             user_name=name
 
         store_in_db=UserAndEncodingDetail.objects.create(encoding=user_encoding,person_name=user_name)
+        
         if store_in_db is not None:
             return Response({'success':True})
         else:
