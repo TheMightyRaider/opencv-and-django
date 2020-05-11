@@ -12,12 +12,10 @@ import os
 from .models import UserAndEncodingDetail
 # Create your views here.
 
-FACE_DETECTOR_PATH = "{base_path}/cascades/haarcascade_frontalface_default.xml".format(base_path=os.path.abspath(os.path.dirname(__file__)))
-# print(os.path.abspath(os.path.dirname(__file__)))
-print(FACE_DETECTOR_PATH)
+# FACE_DETECTOR_PATH = "{base_path}/cascades/haarcascade_frontalface_default.xml".format(base_path=os.path.abspath(os.path.dirname(__file__)))
 
-detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
-print(detector)
+
+# detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
 db_encoding=UserAndEncodingDetail.objects.values_list('encoding',flat=True)
 encoded_user_name=UserAndEncodingDetail.objects.values_list('person_name',flat=True)
 encoding_array=[]
@@ -37,15 +35,22 @@ def postframes():
         frame = camera.read()
         frame = imutils.resize(frame, width=500)
         
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        rects = detector.detectMultiScale(gray, scaleFactor=1.1, 
-            minNeighbors=5, minSize=(30, 30),
-            flags=cv2.CASCADE_SCALE_IMAGE)
+        # rects = detector.detectMultiScale(gray, scaleFactor=1.1, 
+        #     minNeighbors=5, minSize=(30, 30),
+        #     flags=cv2.CASCADE_SCALE_IMAGE)
 
-        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
-        encodings = face_recognition.face_encodings(rgb, boxes)
+        # boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
+
+        face_locations=face_recognition.face_locations(rgb)
+        # print('boxes--{}'.format(boxes))
+        # print(face_locations)
+
+        # yield "Success"
+
+        encodings = face_recognition.face_encodings(rgb, face_locations)
         names=[]
 
         for encoding in encodings:
