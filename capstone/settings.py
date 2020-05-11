@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from decouple import config
-import dj_database_url
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -78,7 +78,14 @@ WSGI_APPLICATION = 'capstone.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-       'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE':'django.db.backends.postgresql',
+        'NAME':config('NAME'),
+        'USER':config('USER'),
+        'PASSWORD':config('PASSWORD'),
+        'HOST':config('HOST'),
+        'PORT':''
+    }
 }
 
 

@@ -7,11 +7,17 @@ import imutils
 import time
 import json
 import cv2
+import os
 
 from .models import UserAndEncodingDetail
 # Create your views here.
 
-detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+FACE_DETECTOR_PATH = "{base_path}/cascades/haarcascade_frontalface_default.xml".format(base_path=os.path.abspath(os.path.dirname(__file__)))
+# print(os.path.abspath(os.path.dirname(__file__)))
+print(FACE_DETECTOR_PATH)
+
+detector = cv2.CascadeClassifier(FACE_DETECTOR_PATH)
+print(detector)
 db_encoding=UserAndEncodingDetail.objects.values_list('encoding',flat=True)
 encoded_user_name=UserAndEncodingDetail.objects.values_list('person_name',flat=True)
 encoding_array=[]
