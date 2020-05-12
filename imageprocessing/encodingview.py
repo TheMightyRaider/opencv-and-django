@@ -14,7 +14,6 @@ from .models import UserAndEncodingDetail
 
 class generateImageEncoding(APIView):
     def post(self,request):
-
         data=request.FILES['encoding']
         name=request.data['name']
         imagebits=data.read()
