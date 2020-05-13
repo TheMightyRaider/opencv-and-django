@@ -7,5 +7,3 @@ urlpatterns=[
     path('encoding',encodingview.generateImageEncoding.as_view(),name='encodings'),
     path('',views.index.as_view(),name='index')
 ]
-
-
